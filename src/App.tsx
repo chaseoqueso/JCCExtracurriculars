@@ -7,6 +7,7 @@ import NavBar from './NavBar';
 import EntryMenu from './EntryMenu';
 import AddEntryPage from './AddEntryPage';
 import EditEntryPage from './EditEntryPage';
+import ManageUsersPage from './ManageUsersPage';
 
 type Entry = {
   id: string;
@@ -137,9 +138,7 @@ function App() {
     }
 
     if (selectedTags.length > 0) {
-      query = query.or(
-        selectedTags.map(tag => `tags.cs.{${tag.toLowerCase()}}`).join(',')
-      );
+      query.contains("tags", selectedTags)
     }
 
     const { data, error } = await query;

@@ -1,65 +1,91 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 
+interface UserRow {
+  id: string;
+  username: string;
+  email: string;
+  role: string;
+}
+
 export default function ManageUsersPage() {
-  const [name, setName] = useState("");
+  const [username, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("general");
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<UserRow[]>([]);
   const [search, setSearch] = useState("");
 
   const fetchUsers = async () => {
-    const { data, error } = await supabase.from("users").select("*");
+    const { data, error } = await supabase.from("users").select("*").eq("role", "general");;
     if (!error) setUsers(data);
   };
 
   const handleCreate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const res = await fetch("/functions/v1/create-user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, role })
-    });
-    const json = await res.json();
-    if (res.ok) {
-      fetchUsers();
-      setName(""); setEmail(""); setPassword(""); setRole("general");
-    } else {
-      alert(json.error);
+    e.preventDefault(); // prevent page reload
+
+    const { data: { session } } = await supabase.auth.getSession();
+
+    try {
+      const res = await fetch(import.meta.env.VITE_SUPABASE_URL + "/functions/v1/create-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session?.access_token}`
+        },
+        body: JSON.stringify({
+          username,  // ✅ renamed
+          email,
+          password,
+          role: "general"
+        })
+      });
+
+      const text = await res.text();
+      const result = text ? JSON.parse(text) : {};
+      console.log(result);
+    } catch (err) {
+      console.error("Error creating user:", err);
+    }
+  };
+  
+  const handleDelete = async (userId: string) => {
+    if (!window.confirm("Are you sure?")) return;
+    const { data: { session } } = await supabase.auth.getSession();
+    console.log(userId);
+
+    try {
+      const res = await fetch(import.meta.env.VITE_SUPABASE_URL + "/functions/v1/delete-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session?.access_token}`,
+        },
+        body: JSON.stringify({ userId })
+      });
+
+      console.log(res);
+      const result = await res.json();
+      console.log(result);
+    } catch (err) {
+      console.error("Error deleting user:", err);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!window.confirm("Are you sure?")) return;
-    const res = await fetch("/functions/v1/delete-user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id })
-    });
-    const json = await res.json();
-    if (res.ok) fetchUsers();
-    else alert(json.error);
-  };
 
   useEffect(() => { fetchUsers(); }, []);
 
   const filteredUsers = users.filter(u =>
-    u.name.toLowerCase().includes(search.toLowerCase()) ||
-    u.email.toLowerCase().includes(search.toLowerCase())
+    u.username?.toLowerCase().includes(search.toLowerCase()) ||
+    u.email?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div style={{ padding: "2rem" }}>
       <h2>Manage Users</h2>
       <form onSubmit={handleCreate}>
-        <input value={name} onChange={e => setName(e.target.value)} placeholder="Name" required />
+        <input value={username} onChange={e => setName(e.target.value)} placeholder="Name" required />
         <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" type="email" required />
         <input value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" type="password" required />
-        <select value={role} onChange={e => setRole(e.target.value)}>
-          <option value="general">General</option>
-          <option value="admin">Admin</option>
-        </select>
         <button type="submit">Create User</button>
       </form>
 
@@ -73,7 +99,7 @@ export default function ManageUsersPage() {
       <ul>
         {filteredUsers.map(u => (
           <li key={u.id}>
-            {u.name} — {u.email} ({u.role})
+            {u.username} — {u.email} ({u.role})
             <button onClick={() => handleDelete(u.id)}>Delete</button>
           </li>
         ))}
