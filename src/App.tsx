@@ -100,7 +100,7 @@ function App() {
           schema: 'public',
           table: 'entries'
         },
-        (payload) => {
+        () => {
           fetchFilteredEntries();
           fetchAllEntries();
         }
