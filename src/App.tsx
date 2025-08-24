@@ -8,6 +8,8 @@ import EntryMenu from './EntryMenu';
 import AddEntryPage from './AddEntryPage';
 import EditEntryPage from './EditEntryPage';
 import ManageUsersPage from './ManageUsersPage';
+import SiteHeader from './components/SiteHeader';
+import PageContainer from './components/PageContainer';
 
 type Entry = {
   id: string;
