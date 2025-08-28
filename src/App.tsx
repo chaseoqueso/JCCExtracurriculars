@@ -3,13 +3,13 @@ import { supabase } from './supabaseClient';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Login from './Login';
 import AdminRoute from './AdminRoute';
-import NavBar from './NavBar';
-import EntryMenu from './EntryMenu';
 import AddEntryPage from './AddEntryPage';
 import EditEntryPage from './EditEntryPage';
 import ManageUsersPage from './ManageUsersPage';
-import SiteHeader from './components/SiteHeader';
-import PageContainer from './components/PageContainer';
+import ExpandableCard from './components/ExpandableCard';
+import FilterDropdown from './components/FilterDropdown';
+import FilterPills from './components/FilterPills';
+import Layout from './components/Layout';
 
 type Entry = {
   id: string;
@@ -172,132 +172,100 @@ function App() {
   }
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Entry Browser</h1>
+    <Layout role={role} onLogout={handleLogout}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <h1 className="text-4xl font-light text-center mb-8">
+                JCC Extracurricular Database
+              </h1>
 
-      {!user ? (
-        <Login onLogin={() => window.location.reload()} />
-      ) : (
-        <>
-          <p>
-            Logged in as: {user.email} ({role}){' '}
-            <button onClick={handleLogout} style={{ marginLeft: '1rem' }}>
-              Logout
-            </button>
-          </p>
+              {/* Search + Filters */}
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  className="flex-1 px-4 py-2 rounded-full bg-white text-black shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                />
 
-          <NavBar role={role} />
+                <FilterDropdown
+                  label="Opportunity Type"
+                  options={typesList}
+                  selected={selectedTypes}
+                  setSelected={setSelectedTypes}
+                />
+                <FilterDropdown
+                  label="Tags"
+                  options={tagsList}
+                  selected={selectedTags}
+                  setSelected={setSelectedTags}
+                />
 
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <h2>All Entries</h2>
-                  <div style={{ marginBottom: '1rem' }}>
-                    <input
-                      type="text"
-                      placeholder="Search by title"
-                      value={search}
-                      onChange={e => setSearch(e.target.value)}
-                      style={{ marginRight: '1rem' }}
-                    />
-                  </div>
-                  <details style={{ marginRight: '1rem', display: 'inline-block' }}>
-                    <summary>Filter by Type</summary>
-                    {typesList.map(type => (
-                      <label key={type} style={{ display: 'block' }}>
-                        <input
-                          type="checkbox"
-                          checked={selectedTypes.includes(type)}
-                          onChange={e => {
-                            if (e.target.checked) {
-                              setSelectedTypes([...selectedTypes, type]);
-                            } else {
-                              setSelectedTypes(selectedTypes.filter(t => t !== type));
-                            }
-                          }}
-                        />
-                        {type}
-                      </label>
-                    ))}
-                  </details>
-                  <details style={{ display: 'inline-block' }}>
-                    <summary>Filter by Tag</summary>
-                    {tagsList.map(tag => (
-                      <label key={tag} style={{ display: 'block' }}>
-                        <input
-                          type="checkbox"
-                          checked={selectedTags.includes(tag)}
-                          onChange={e => {
-                            if (e.target.checked) {
-                              setSelectedTags([...selectedTags, tag]);
-                            } else {
-                              setSelectedTags(selectedTags.filter(t => t !== tag));
-                            }
-                          }}
-                        />
-                        {tag}
-                      </label>
-                    ))}
-                  </details>
-                  <ul>
-                    {entries.map(entry => (
-                      <li key={entry.id}>
-                        <strong>
-                            <a 
-                              href={entry.link} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              style={{ color: 'inherit', textDecoration: 'underline' }}
-                            >
-                              {entry.title}
-                            </a>
-                          </strong> — {entry.tags?.join(', ')}
-                        <p>{entry.description}</p>
-                        <em>Type: {entry.type}</em>
+                <button
+                  onClick={() => {
+                    setSelectedTypes([]);
+                    setSelectedTags([]);
+                    setSearch('');
+                  }}
+                  className="text-sm font-medium underline hover:text-indigo-300"
+                >
+                  Clear All
+                </button>
+              </div>
 
-                        {role === 'admin' && (
-                          <EntryMenu
-                            entryId={entry.id}
-                            onDelete={() => handleDelete(entry.id)}
-                          />
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              }
-            />
-            <Route
-              path="/add"
-              element={
-                <AdminRoute role={role}>
-                  <AddEntryPage />
-                </AdminRoute>
-              }
-            />
-            <Route
-              path="/edit/:id"
-              element={
-                <AdminRoute role={role}>
-                  <EditEntryPage />
-                </AdminRoute>
-              }
-            />
-            <Route
-              path="/manage-users"
-              element={
-                <AdminRoute role={role}>
-                  <ManageUsersPage />
-                </AdminRoute>
-              }
-            />
-          </Routes>
+              <FilterPills
+                selectedTypes={selectedTypes}
+                setSelectedTypes={setSelectedTypes}
+                selectedTags={selectedTags}
+                setSelectedTags={setSelectedTags}
+              />
 
-        </>
-      )}
-    </div>
+              {/* Search Results */}
+              <h2 className="text-2xl font-light mb-4">Search Results</h2>
+              <div className="space-y-4">
+                {entries.map(entry => (
+                  <ExpandableCard
+                    key={entry.id}
+                    entry={entry}
+                    role={role}
+                    onDelete={() => handleDelete(entry.id)}
+                  />
+                ))}
+              </div>
+            </>
+          }
+        />
+
+        <Route
+          path="/add"
+          element={
+            <AdminRoute role={role}>
+              <AddEntryPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/edit/:id"
+          element={
+            <AdminRoute role={role}>
+              <EditEntryPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/manage-users"
+          element={
+            <AdminRoute role={role}>
+              <ManageUsersPage />
+            </AdminRoute>
+          }
+        />
+      </Routes>
+    </Layout>
   );
 }
 
