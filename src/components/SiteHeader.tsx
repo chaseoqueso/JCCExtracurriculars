@@ -42,7 +42,7 @@ export default function SiteHeader({ isAdmin, onLogout }: Props) {
           {onLogout && (
             <button
               onClick={onLogout}
-              className="ml-2 px-3 py-2 rounded-lg text-sm font-semibold text-white bg-brand-500 hover:bg-brand-600"
+              className="ml-2 px-3 py-2 rounded-lg text-sm font-semibold text-white bg-gray-800 hover:bg-gray-600"
             >
               Log out
             </button>

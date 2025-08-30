@@ -2,40 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Reset browser defaults and let Tailwind control look/feel */
+/* Optional: custom resets */
 html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-}
-
-/* Remove Vite starter theme overrides */
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  /* Let Tailwind handle colors instead of forcing dark/light */
-  color: inherit;
-  background-color: transparent;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Keep link styles minimal so Tailwind utilities can override */
-a {
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
-
-/* Reset button styles, Tailwind classes will take over */
-button {
-  all: unset;
-  display: inline-block;
-  cursor: pointer;
 }

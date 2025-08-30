@@ -11,6 +11,7 @@ import FilterDropdown from './components/FilterDropdown';
 import FilterPills from './components/FilterPills';
 import Layout from './components/Layout';
 
+
 type Entry = {
   id: string;
   title: string;

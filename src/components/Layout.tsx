@@ -10,7 +10,7 @@ export default function Layout({
   onLogout?: () => void;
 }) {
   return (
-    <div className="min-h-screen bg-purple-400">
+    <div className="min-h-screen bg-blue-400">
       {/* Header */}
       <SiteHeader isAdmin={role === "admin"} onLogout={onLogout} />
 
