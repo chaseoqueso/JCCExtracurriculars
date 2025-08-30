@@ -31,7 +31,7 @@ export default function EditEntryPage() {
 
   return (
     <div style={{ padding: '2rem' }}>
-      <h2>Edit Entry</h2>
+      <h2 className="text-2xl font-semibold">Edit Entry</h2>
       <EntryForm initialData={entry} onSubmit={handleUpdate} />
     </div>
   );

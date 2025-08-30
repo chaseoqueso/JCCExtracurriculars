@@ -81,26 +81,76 @@ export default function ManageUsersPage() {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h2>Manage Users</h2>
-      <form onSubmit={handleCreate}>
-        <input value={username} onChange={e => setName(e.target.value)} placeholder="Name" required />
-        <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" type="email" required />
-        <input value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" type="password" required />
-        <button type="submit">Create User</button>
+      <h2 className="text-2xl font-semibold">Manage Users</h2>
+      <form className="flex flex-col py-4 space-y-4" onSubmit={handleCreate}>
+        <div className="flex flex-col space-y-1">
+          <label className="font-semibold">
+            Username
+          </label>
+          <input 
+            className="w-full px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
+            value={username} 
+            onChange={e => setName(e.target.value)} 
+            placeholder="Username" 
+            required 
+          />
+        </div>
+        <div className="flex flex-col space-y-1">
+          <label className="font-semibold">
+            Email Address
+          </label>
+          <input 
+            className="w-full px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
+            value={email} 
+            onChange={e => setEmail(e.target.value)} 
+            placeholder="Email Address" 
+            type="email" 
+            required 
+          />
+        </div>
+        <div className="flex flex-col space-y-1">
+          <label className="font-semibold">
+            Password
+          </label>
+          <input 
+            className="w-full px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
+            value={password} 
+            onChange={e => setPassword(e.target.value)} 
+            placeholder="Password" 
+            type="password" 
+            required 
+          />
+        </div>
+        <div className="flex pt-6 justify-center">
+          <button 
+            className="w-1/5 py-2 rounded-lg bg-gray-600 hover:bg-gray-500 transition font-medium disabled:opacity-50"
+            type="submit"
+          >
+            Create User
+          </button>
+        </div>
       </form>
 
       <input
+        className="w-full px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
         placeholder="Search users..."
         value={search}
         onChange={e => setSearch(e.target.value)}
         style={{ marginTop: "1rem" }}
       />
 
-      <ul>
+      <ul className="p-2">
         {filteredUsers.map(u => (
-          <li key={u.id}>
-            {u.username} — {u.email} ({u.role})
-            <button onClick={() => handleDelete(u.id)}>Delete</button>
+          <li key={u.id} className="flex items-center space-x-4">
+            <div>
+              {u.username} — {u.email} ({u.role})
+            </div>
+            <button 
+              className="p-2 rounded-lg bg-gray-600 hover:bg-gray-500 transition font-medium disabled:opacity-50"
+              onClick={() => handleDelete(u.id)}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>

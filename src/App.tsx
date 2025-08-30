@@ -7,7 +7,8 @@ import AddEntryPage from './AddEntryPage';
 import EditEntryPage from './EditEntryPage';
 import ManageUsersPage from './ManageUsersPage';
 import ExpandableCard from './components/ExpandableCard';
-import FilterDropdown from './components/FilterDropdown';
+import TagDropdown from './components/TagDropdown.tsx';
+import TypeDropdown from './components/TypeDropdown.tsx';
 import FilterPills from './components/FilterPills';
 import Layout from './components/Layout';
 
@@ -193,13 +194,13 @@ function App() {
                   className="flex-1 px-4 py-2 rounded-full bg-white text-black shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 />
 
-                <FilterDropdown
+                <TypeDropdown
                   label="Opportunity Type"
                   options={typesList}
                   selected={selectedTypes}
                   setSelected={setSelectedTypes}
                 />
-                <FilterDropdown
+                <TagDropdown
                   label="Tags"
                   options={tagsList}
                   selected={selectedTags}

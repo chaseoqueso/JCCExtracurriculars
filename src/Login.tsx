@@ -33,7 +33,7 @@ function Login({ onLogin }: { onLogin: () => void }) {
         onSubmit={handleLogin}
         className="w-full max-w-sm bg-gray-800 text-white rounded-2xl shadow-xl p-8 space-y-6"
       >
-        <h2 className="text-2xl font-light text-center">Login</h2>
+        <h2 className="text-2xl font-semibold text-center">Login</h2>
 
         <div>
           <input
@@ -42,7 +42,7 @@ function Login({ onLogin }: { onLogin: () => void }) {
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
+            className="w-full px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
           />
         </div>
 
@@ -53,14 +53,14 @@ function Login({ onLogin }: { onLogin: () => void }) {
             value={password}
             onChange={e => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
+            className="w-full px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2 rounded-lg bg-brand-500 hover:bg-brand-600 transition font-medium disabled:opacity-50"
+          className="w-full py-2 rounded-lg bg-gray-600 hover:bg-gray-500 transition font-medium disabled:opacity-50"
         >
           {loading ? 'Logging in...' : 'Login'}
         </button>

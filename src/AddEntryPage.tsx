@@ -16,7 +16,7 @@ export default function AddEntryPage() {
 
   return (
     <div style={{ padding: '2rem' }}>
-      <h2>Add Entry</h2>
+      <h2 className="text-2xl font-semibold">Add Entry</h2>
       <EntryForm onSubmit={handleAdd} />
     </div>
   );

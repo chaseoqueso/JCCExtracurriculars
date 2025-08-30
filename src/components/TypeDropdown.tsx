@@ -7,24 +7,24 @@ type Props = {
   setSelected: (values: string[]) => void;
 };
 
-export default function FilterDropdown({ label, options, selected, setSelected }: Props) {
+export default function TypeDropdown({ label, options, selected, setSelected }: Props) {
   const toggleOption = (option: string) => {
     if (selected.includes(option)) {
       setSelected(selected.filter(o => o !== option));
     } else {
-      setSelected([...selected, option]);
+      setSelected([option]);
     }
   };
 
   return (
     <Popover className="relative">
       <Popover.Button className="px-4 py-2 bg-white text-black rounded-md shadow hover:bg-gray-100">
-        {label}
+        {label + " ▼"}
       </Popover.Button>
-
+      
       <Popover.Panel className="absolute z-10 mt-2 w-56 bg-white rounded-lg shadow-lg p-4 text-black">
         <h4 className="font-semibold mb-2">{label}</h4>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2">
           {options.map(option => (
             <label key={option} className="flex items-center space-x-2 text-sm">
               <input

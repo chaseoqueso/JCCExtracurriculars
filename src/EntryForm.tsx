@@ -58,41 +58,78 @@ export default function EntryForm({ initialData, onSubmit }: {
 
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        value={title}
-        onChange={e => setTitle(e.target.value)}
-        placeholder="Title"
-        required
-      />
+    <form className="flex flex-col py-4 space-y-4" onSubmit={handleSubmit}>
+      <div className="flex flex-col space-y-1">
+        <label className="font-semibold">
+          Title
+        </label>
+        <input
+          className="w-full px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+          placeholder="Title"
+          required
+        />
+      </div>
 
-      <input
-        value={link}
-        onChange={e => setLink(e.target.value)}
-        placeholder="Link (optional)"
-        type="url"
-      />
+      <div className="flex flex-col space-y-1">
+        <label className="font-semibold">
+          URL
+        </label>
+        <input
+          className="w-full px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
+          value={link}
+          onChange={e => setLink(e.target.value)}
+          placeholder="Link (optional)"
+          type="url"
+        />
+      </div>
 
-      <textarea
-        value={description}
-        onChange={e => setDescription(e.target.value)}
-        placeholder="Description (optional)"
-      />
+      <div className="flex flex-col space-y-1">
+        <label className="font-semibold">
+          Description
+        </label>
+        <textarea
+          className="w-full h-auto min-h-36 px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
+          value={description}
+          onChange={e => setDescription(e.target.value)}
+          placeholder="Description (optional)"
+        />
+      </div>
 
-      <input
-        value={type}
-        onChange={e => setType(e.target.value)}
-        placeholder="Type"
-        required
-      />
+      <div className="flex flex-col space-y-1">
+        <label className="font-semibold">
+          Opportunity Type
+        </label>
+        <input
+          className="w-full px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
+          value={type}
+          onChange={e => setType(e.target.value)}
+          placeholder="Opportunity Type"
+          required
+        />
+      </div>
 
-      <input
-        value={tags}
-        onChange={e => setTags(e.target.value)}
-        placeholder="Tags (comma separated, optional)"
-      />
+      <div className="flex flex-col space-y-1">
+        <label className="font-semibold">
+          Tags
+        </label>
+        <input
+          className="w-full px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
+          value={tags}
+          onChange={e => setTags(e.target.value)}
+          placeholder="Tags (comma separated, optional)"
+        />
+      </div>
 
-      <button type="submit">{initialData ? 'Update Entry' : 'Add Entry'}</button>
+      <div className="flex pt-6 justify-center">
+        <button 
+          type="submit"
+          className="w-1/5 py-2 rounded-lg bg-gray-600 hover:bg-gray-500 transition font-medium disabled:opacity-50"
+        >
+          {initialData ? 'Update Entry' : 'Add Entry'}
+        </button>
+      </div>
     </form>
   );
 }

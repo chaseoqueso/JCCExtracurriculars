@@ -6,9 +6,9 @@ export default function EntryMenu({ entryId, onDelete }: { entryId: string; onDe
 
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
-      <button onClick={() => setOpen(!open)}>⋮</button>
+      <button className="bg-white text-black rounded-xl shadow p-4" onClick={() => setOpen(!open)}>⋮</button>
       {open && (
-        <div
+        <div className="bg-white text-black rounded-xl shadow p-4"
           style={{
             position: 'absolute',
             right: 0,
