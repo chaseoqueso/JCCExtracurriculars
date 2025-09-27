@@ -10,13 +10,13 @@ export default function Layout({
   onLogout?: () => void;
 }) {
   return (
-    <div className="min-h-screen bg-blue-400">
+    <div className="min-h-screen bg-secondary">
       {/* Header */}
       <SiteHeader isAdmin={role === "admin"} onLogout={onLogout} />
 
       {/* Page content inside gray card */}
       <main className="max-w-5xl mx-auto px-4 py-10">
-        <div className="bg-gray-800 text-white rounded-2xl shadow-xl p-10">
+        <div className="bg-primary text-white rounded-2xl shadow-xl p-10">
           {children}
         </div>
       </main>

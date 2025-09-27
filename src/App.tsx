@@ -181,7 +181,7 @@ function App() {
           element={
             <>
               <h1 className="text-4xl font-light text-center mb-8">
-                JCC Extracurricular Database
+                Extracurricular Database
               </h1>
 
               {/* Search + Filters */}

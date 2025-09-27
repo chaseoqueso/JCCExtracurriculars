@@ -28,10 +28,10 @@ function Login({ onLogin }: { onLogin: () => void }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-blue-400 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-secondary px-4">
       <form
         onSubmit={handleLogin}
-        className="w-full max-w-sm bg-gray-800 text-white rounded-2xl shadow-xl p-8 space-y-6"
+        className="w-full max-w-sm bg-primary text-white rounded-2xl shadow-xl p-8 space-y-6"
       >
         <h2 className="text-2xl font-semibold text-center">Login</h2>
 

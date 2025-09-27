@@ -81,7 +81,7 @@ export default function ManageUsersPage() {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h2 className="text-2xl font-semibold">Manage Users</h2>
+      <h2 className="text-2xl font-semibold">Add User</h2>
       <form className="flex flex-col py-4 space-y-4" onSubmit={handleCreate}>
         <div className="flex flex-col space-y-1">
           <label className="font-semibold">
@@ -131,6 +131,7 @@ export default function ManageUsersPage() {
         </div>
       </form>
 
+      <h2 className="text-2xl font-semibold">Manage Users</h2>
       <input
         className="w-full px-4 py-2 rounded-lg bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400"
         placeholder="Search users..."

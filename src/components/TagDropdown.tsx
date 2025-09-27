@@ -22,9 +22,9 @@ export default function TagDropdown({ label, options, selected, setSelected }: P
         {label + " ▼"}
       </Popover.Button>
 
-      <Popover.Panel className="absolute z-10 mt-2 w-56 bg-white rounded-lg shadow-lg p-4 text-black">
+      <Popover.Panel className="absolute z-10 mt-2 bg-white rounded-lg shadow-lg p-4 text-black">
         <h4 className="font-semibold mb-2">{label}</h4>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid w-96 grid-cols-3 gap-3">
           {options.map(option => (
             <label key={option} className="flex items-center space-x-2 text-sm">
               <input
