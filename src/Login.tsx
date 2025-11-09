@@ -60,7 +60,7 @@ function Login({ onLogin }: { onLogin: () => void }) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2 rounded-lg bg-gray-600 hover:bg-gray-500 transition font-medium disabled:opacity-50"
+          className="w-full py-2 rounded-lg bg-secondary hover:bg-secondary-hover transition font-medium disabled:opacity-50"
         >
           {loading ? 'Logging in...' : 'Login'}
         </button>

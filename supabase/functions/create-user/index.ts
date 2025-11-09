@@ -2,7 +2,7 @@ import { serve } from "https://deno.land/std@0.192.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { corsHeaders } from "../_shared/cors.ts";
 
-console.log("create-user live");
+console.log("create-user updated");
 
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
@@ -19,7 +19,6 @@ serve(async (req: Request) => {
 
     const authHeader = req.headers.get("Authorization") || "";
 
-    // ✅ anon client for verifying the JWT from the request
     const anonClient = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_ANON_KEY")!,
@@ -38,13 +37,11 @@ serve(async (req: Request) => {
       });
     }
 
-    // ✅ service client for privileged actions
     const serviceClient = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // confirm admin
     const { data: isAdmin, error: isAdminError } = await serviceClient.rpc(
       "is_admin",
       { uid: user.id }
@@ -57,21 +54,37 @@ serve(async (req: Request) => {
       });
     }
 
-    // parse payload
+    // Parse request
     const payload = await req.json();
-    const { username, email, password, role } = payload;
-    if (!username || !email || !password || !role) {
+    const { username, email, role } = payload;
+    if (!username || !email || !role) {
       return new Response(JSON.stringify({ error: "Missing fields" }), {
         status: 400,
         headers: corsHeaders(),
       });
     }
 
-    // create auth user
+    // ✅ fetch default password
+    const { data: setting, error: fetchError } = await serviceClient
+      .from("app_settings")
+      .select("value")
+      .eq("key", "default_general_password")
+      .single();
+
+    if (fetchError || !setting?.value) {
+      return new Response(
+        JSON.stringify({ error: "Could not fetch default password" }),
+        { status: 500, headers: corsHeaders() }
+      );
+    }
+
+    const defaultPassword = setting.value;
+
+    // ✅ create auth user
     const { data: authUser, error: authError } =
       await serviceClient.auth.admin.createUser({
         email,
-        password,
+        password: defaultPassword,
         email_confirm: true,
       });
 
@@ -82,7 +95,7 @@ serve(async (req: Request) => {
       );
     }
 
-    // insert into your users table
+    // ✅ add to users table
     const { error: insertError } = await serviceClient.from("users").insert({
       id: authUser.user.id,
       username,

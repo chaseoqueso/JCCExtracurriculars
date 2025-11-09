@@ -32,10 +32,19 @@ function App() {
   const [search, setSearch] = useState('');
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [authLoading, setAuthLoading] = useState(true);
 
   const location = useLocation();
   const typesList = Array.from(new Set(allEntries.map(e => e.type))).sort((a, b) => a.localeCompare(b));
   const tagsList = Array.from(new Set(allEntries.flatMap(e => e.tags))).sort((a, b) => a.localeCompare(b));
+
+  // Restore cached role immediately for faster UI
+  useEffect(() => {
+    const cachedRole = localStorage.getItem("role");
+    if (cachedRole) {
+      setRole(cachedRole as Role);
+    }
+  }, []);
 
   useEffect(() => {
     const getUserAndRole = async () => {
@@ -47,8 +56,13 @@ function App() {
           .select('role')
           .eq('id', user.id)
           .single();
-        setRole(profile?.role || 'general');
+        const userRole = profile?.role || "general";
+        setRole(userRole);
+        localStorage.setItem("role", userRole); // ✅ cache it
+      } else {
+        localStorage.removeItem("role"); // ✅ clear on logout
       }
+      setAuthLoading(false); // ✅ mark done
     };
     getUserAndRole();
   }, []);
@@ -149,7 +163,7 @@ function App() {
     if (error) {
       console.error('Error fetching entries:', error.message);
     } else {
-      setEntries(data);
+      setEntries(data.sort((a: Entry, b: Entry) => a.title.localeCompare(b.title)));
     }
   };
 
@@ -168,6 +182,15 @@ function App() {
     }
   };
 
+  if (authLoading) {
+    return (
+      <Layout role={role} onLogout={handleLogout}>
+        <div className="flex justify-center min-h-screen bg-primary text-white">
+          <p className="text-lg animate-pulse">Loading...</p>
+        </div>
+      </Layout>
+    );
+  }
 
   if (!user) {
     return <Login onLogin={() => window.location.reload()} />;

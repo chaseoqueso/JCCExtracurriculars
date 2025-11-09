@@ -125,7 +125,7 @@ export default function EntryForm({ initialData, onSubmit }: {
       <div className="flex pt-6 justify-center">
         <button 
           type="submit"
-          className="w-1/5 py-2 rounded-lg bg-gray-600 hover:bg-gray-500 transition font-medium disabled:opacity-50"
+          className="w-1/5 py-2 rounded-lg bg-secondary-hover hover:bg-secondary transition font-medium disabled:opacity-50"
         >
           {initialData ? 'Update Entry' : 'Add Entry'}
         </button>
